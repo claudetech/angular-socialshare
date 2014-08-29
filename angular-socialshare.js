@@ -14,23 +14,23 @@ angular.module('djds4rce.angular-socialshare', [])
       if(fbId){
         this.fbId = fbId;
         $window.fbAsyncInit = function() {
-          FB.init({ 
-            appId: fbId, 
-            channelUrl: 'app/channel.html', 
-            status: true, 
-            xfbml: true 
+          FB.init({
+            appId: fbId,
+            channelUrl: 'app/channel.html',
+            status: true,
+            xfbml: true
           });
         };
         (function(d){
-          var js,           
-          id = 'facebook-jssdk', 
+          var js,
+          id = 'facebook-jssdk',
           ref = d.getElementsByTagName('script')[0];
           if (d.getElementById(id)) {
             return;
           }
 
-          js = d.createElement('script'); 
-          js.id = id; 
+          js = d.createElement('script');
+          js.id = id;
           js.async = true;
           js.src = "//connect.facebook.net/en_US/all.js";
 
@@ -47,26 +47,26 @@ angular.module('djds4rce.angular-socialshare', [])
 }]).directive('facebook', ['$timeout','$http', function($timeout,$http) {
   return {
     scope: {
-      shares: '=' 
-    }, 
+      shares: '='
+    },
     transclude: true,
-    template: '<div class="facebookButton">' + 
-      '<div class="pluginButton">' + 
-        '<div class="pluginButtonContainer">' + 
-          '<div class="pluginButtonImage">' + 
-            '<button type="button">' + 
-              '<i class="pluginButtonIcon img sp_plugin-button-2x sx_plugin-button-2x_favblue"></i>' + 
-            '</button>' + 
-          '</div>' + 
-          '<span class="pluginButtonLabel">Share</span>' + 
-        '</div>' + 
-      '</div>' + 
-    '</div>' + 
+    template: '<div class="facebookButton">' +
+      '<div class="pluginButton">' +
+        '<div class="pluginButtonContainer">' +
+          '<div class="pluginButtonImage">' +
+            '<button type="button">' +
+              '<i class="pluginButtonIcon img sp_plugin-button-2x sx_plugin-button-2x_favblue"></i>' +
+            '</button>' +
+          '</div>' +
+          '<span class="pluginButtonLabel">Share</span>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
     '<div class="facebookCount">' +
-      '<div class="pluginCountButton pluginCountNum">' + 
+      '<div class="pluginCountButton pluginCountNum">' +
         '<span ng-transclude></span>' +
-      '</div>' + 
-      '<div class="pluginCountButtonNub"><s></s><i></i></div>' + 
+      '</div>' +
+      '<div class="pluginCountButtonNub"><s></s><i></i></div>' +
     '</div>',
     link: function(scope, element, attr) {
       if(attr.shares){
@@ -106,42 +106,45 @@ angular.module('djds4rce.angular-socialshare', [])
   return {
     link: function(scope, element, attr) {
       $timeout(function() {
-        twttr.widgets.createShareButton(
-          attr.url,
-          element[0],
-          function() {}, {
-            count: attr.count,
-            text: attr.text,
-            via: attr.via,
-            size: attr.size
-          }
-        );
+        twttr.ready(function (twttr) {
+          twttr.widgets.createShareButton(
+            attr.url,
+            element[0],
+            function() {}, {
+              lang: attr.lang,
+              count: attr.count,
+              text: attr.text,
+              via: attr.via,
+              size: attr.size
+            }
+          );
+        });
       });
     }
   };
 }]).directive('linkedin', ['$timeout','$http', '$window',function($timeout,$http,$window) {
   return {
     scope: {
-      shares: '=' 
-    }, 
+      shares: '='
+    },
     transclude: true,
-    template: '<div class="linkedinButton">' + 
-      '<div class="pluginButton">' + 
-        '<div class="pluginButtonContainer">' + 
-          '<div class="pluginButtonImage">in' + 
-          '</div>' + 
-          '<span class="pluginButtonLabel"><span>Share</span></span>' + 
-        '</div>' + 
-      '</div>' + 
-    '</div>' + 
+    template: '<div class="linkedinButton">' +
+      '<div class="pluginButton">' +
+        '<div class="pluginButtonContainer">' +
+          '<div class="pluginButtonImage">in' +
+          '</div>' +
+          '<span class="pluginButtonLabel"><span>Share</span></span>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
     '<div class="linkedinCount">' +
-      '<div class="pluginCountButton">' + 
+      '<div class="pluginCountButton">' +
         '<div class="pluginCountButtonRight">' +
           '<div class="pluginCountButtonLeft">' +
             '<span ng-transclude></span>' +
           '</div>' +
         '</div>' +
-      '</div>' + 
+      '</div>' +
     '</div>',
     link: function(scope, element, attr) {
       if(attr.shares){
@@ -181,7 +184,7 @@ angular.module('djds4rce.angular-socialshare', [])
       element.append(tumblr_button);
     }
 
-  }  
+  }
 }]).directive('tumblrQoute',[function(){
   return {
     link: function(scope,element,attr){
@@ -191,7 +194,7 @@ angular.module('djds4rce.angular-socialshare', [])
       tumblr_button.setAttribute("style", attr.styling||"display:inline-block; text-indent:-9999px; overflow:hidden; width:81px; height:20px; background:url('http://platform.tumblr.com/v1/share_1.png') top left no-repeat transparent;");
       element.append(tumblr_button);
     }
-  }  
+  }
 }]).directive('tumblrImage',[function(){
   return {
     link: function(scope,element,attr){
